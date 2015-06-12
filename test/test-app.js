@@ -6,17 +6,17 @@ var helpers = require('yeoman-generator').test;
 var os = require('os');
 
 describe('webfactory-open-source:app', function () {
-  before(function (done) {
-    helpers.run(path.join(__dirname, '../generators/app'))
-      .withOptions({ skipInstall: true })
-      .withPrompts({ someOption: true })
-      .on('end', done);
-  });
+    before(function (done) {
+        helpers.run(path.join(__dirname, '../generators/app'))
+            .withOptions({skipInstall: true})
+            .withPrompts({someOption: true})
+            .on('end', done);
+    });
 
-  it('creates files', function () {
-    assert.file([
-      'LICENSE',
-      'README.md'
-    ]);
-  });
+    it('creates files', function () {
+        assert.file([
+            'LICENSE',
+            'README.md'
+        ]);
+    });
 });
