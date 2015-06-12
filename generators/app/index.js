@@ -33,6 +33,7 @@ module.exports = yeoman.generators.Base.extend({
         //   - Generate Travis Image in README
         // - Check project type (bundle, library, app)
         //   - add typ to README
+        // - add Travis config
         app: function () {
             var templateParameters = {
                 'year': new Date().getFullYear()
