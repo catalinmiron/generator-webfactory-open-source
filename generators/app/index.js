@@ -29,15 +29,18 @@ module.exports = yeoman.generators.Base.extend({
 
     writing: {
         app: function () {
+            var templateParameters = {
+                'year': new Date().getFullYear()
+            };
             this.fs.copyTpl(
                 this.templatePath('_LICENSE'),
                 this.destinationPath('LICENSE'),
-                {}
+                templateParameters
             );
             this.fs.copyTpl(
                 this.templatePath('_README.md'),
                 this.destinationPath('README.md'),
-                {}
+                templateParameters
             );
         }
     },
