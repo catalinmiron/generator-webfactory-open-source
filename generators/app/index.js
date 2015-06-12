@@ -28,6 +28,11 @@ module.exports = yeoman.generators.Base.extend({
     },
 
     writing: {
+        // ToDo:
+        // - Check Repo Url
+        //   - Generate Travis Image in README
+        // - Check project type (bundle, library, app)
+        //   - add typ to README
         app: function () {
             var templateParameters = {
                 'year': new Date().getFullYear()
