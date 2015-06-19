@@ -1,4 +1,4 @@
-# Symfony Application Tests #
+# <%= project %> #
 
 [![Build Status](https://travis-ci.org/<%= vendor %>/<%= project %>.svg?branch=master)](https://travis-ci.org/<%= vendor %>/<%= project %>)
 
