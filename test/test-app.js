@@ -18,9 +18,17 @@ describe('webfactory-open-source:app', function () {
         ]);
     });
 
+    it('adds current year to license', function () {
+        assert.fileContent('LICENSE', new RegExp(new Date().getFullYear().toString()));
+    });
+
     it('creates a README file', function () {
         assert.file([
             'README.md'
         ]);
+    });
+
+    it('adds current year to README', function () {
+        assert.fileContent('README.md', new RegExp(new Date().getFullYear().toString()));
     });
 });
