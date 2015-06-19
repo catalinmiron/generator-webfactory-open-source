@@ -1,6 +1,6 @@
 # Symfony Application Tests #
 
-[![Build Status](https://travis-ci.org/webfactory/symfony-application-tests.svg?branch=master)](https://travis-ci.org/webfactory/symfony-application-tests)
+[![Build Status](https://travis-ci.org/<%= vendor %>/<%= project %>.svg?branch=master)](https://travis-ci.org/<%= vendor %>/<%= project %>)
 
 ## Credits, Copyright and License ##
 
