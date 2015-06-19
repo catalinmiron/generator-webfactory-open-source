@@ -30,36 +30,33 @@ module.exports = yeoman.generators.Base.extend({
         //   - add typ to README
         // - add Travis config
         app: function () {
-            var templateParameters = {
-                'vendor': 'webfactory',
-                'project': '',
-                'year': new Date().getFullYear()
-            };
-
             git.Repository.open(this.destinationPath())
                 .then(function (projectRepository) {
-                    git.Remote.lookup(projectRepository, "origin")
-                        .then(function(remote) {
-                            var info = gitHubInfo.fromUrl(remote.url());
-                            console.log(info);
-                            templateParameters.vendor  = info.user;
-                            templateParameters.project = info.project;
-                        })
-                        .done();
+                    return git.Remote.lookup(projectRepository, "origin");
                 })
+                .then(function(remote) {
+                    return gitHubInfo.fromUrl(remote.url());
+                })
+                .then(function (info) {
+                    return {
+                        'vendor': info.user,
+                        'project': info.project,
+                        'year': new Date().getFullYear()
+                    }
+                })
+                .then(function (templateParameters) {
+                    this.fs.copyTpl(
+                        this.templatePath('_LICENSE'),
+                        this.destinationPath('LICENSE'),
+                        templateParameters
+                    );
+                    this.fs.copyTpl(
+                        this.templatePath('_README.md'),
+                        this.destinationPath('README.md'),
+                        templateParameters
+                    );
+                }.bind(this))
                 .done();
-
-            console.log(templateParameters);
-            this.fs.copyTpl(
-                this.templatePath('_LICENSE'),
-                this.destinationPath('LICENSE'),
-                templateParameters
-            );
-            this.fs.copyTpl(
-                this.templatePath('_README.md'),
-                this.destinationPath('README.md'),
-                templateParameters
-            );
         }
     },
 
