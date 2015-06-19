@@ -74,6 +74,11 @@ module.exports = yeoman.generators.Base.extend({
                         this.destinationPath('README.md'),
                         templateParameters
                     );
+                    this.fs.copyTpl(
+                        this.templatePath('_.travis.yml'),
+                        this.destinationPath('.travis.yml'),
+                        templateParameters
+                    );
                 }.bind(this))
                 .catch(function (error) {
                     this.log.error('Project setup failed.', error);

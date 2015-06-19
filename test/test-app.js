@@ -38,4 +38,10 @@ describe('webfactory-open-source:app', function () {
     it('adds Travis URL to README', function () {
         assert.fileContent('README.md', /https:\/\/travis-ci.org/);
     });
+
+    it('adds Travis configuration', function () {
+        assert.file([
+            '.travis.yml'
+        ]);
+    });
 });
