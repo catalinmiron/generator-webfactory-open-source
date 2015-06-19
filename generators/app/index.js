@@ -46,7 +46,10 @@ module.exports = yeoman.generators.Base.extend({
                     return git.Remote.lookup(projectRepository, "origin");
                 })
                 .then(function(remote) {
-                    return gitHubInfo.fromUrl(remote.url());
+                    return remote.url();
+                })
+                .then(function(url) {
+                    return gitHubInfo.fromUrl(url);
                 })
                 .then(function (info) {
                     return {
