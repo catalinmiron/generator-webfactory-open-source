@@ -41,13 +41,18 @@ module.exports = yeoman.generators.Base.extend({
         //   - add typ to README
         // - add Travis config
         app: function () {
-            git.Repository.open(this.destinationPath())
-                .then(function (projectRepository) {
-                    return git.Remote.lookup(projectRepository, "origin");
-                })
-                .then(function (remote) {
-                    return remote.url();
-                })
+            var determineRepositoryUrl = Promise.resolve(this.options.repositoryUrl);
+            if (this.options.repositoryUrl === null) {
+                // Repository URL must be determined automatically.
+                determineRepositoryUrl = git.Repository.open(this.destinationPath())
+                    .then(function (projectRepository) {
+                        return git.Remote.lookup(projectRepository, "origin");
+                    })
+                    .then(function (remote) {
+                        return remote.url();
+                    });
+            }
+            determineRepositoryUrl
                 .then(function (url) {
                     return gitHubInfo.fromUrl(url);
                 })
