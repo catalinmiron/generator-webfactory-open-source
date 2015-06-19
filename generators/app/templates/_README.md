@@ -10,7 +10,7 @@
 
 ## Credits, Copyright and License ##
 
-This bundle was started at webfactory GmbH, Bonn.
+This project was started at webfactory GmbH, Bonn.
 
 - <http://www.webfactory.de>
 - <http://twitter.com/webfactory>
