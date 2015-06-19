@@ -12,9 +12,14 @@ describe('webfactory-open-source:app', function () {
             .on('end', done);
     });
 
-    it('creates files', function () {
+    it('creates a license file', function () {
         assert.file([
-            'LICENSE',
+            'LICENSE'
+        ]);
+    });
+
+    it('creates a README file', function () {
+        assert.file([
             'README.md'
         ]);
     });
