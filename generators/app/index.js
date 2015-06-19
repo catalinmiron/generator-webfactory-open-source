@@ -12,17 +12,10 @@ module.exports = yeoman.generators.Base.extend({
             'Welcome to the gnarly ' + chalk.red('WebfactoryOpenSource') + ' generator!'
         ));
 
-        var prompts = [{
-            type: 'confirm',
-            name: 'someOption',
-            message: 'Would you like to enable this option?',
-            default: true
-        }];
-
+        var prompts = [];
         this.prompt(prompts, function (props) {
             this.props = props;
             // To access props later use this.props.someOption;
-
             done();
         }.bind(this));
     },
