@@ -7,6 +7,16 @@ var git = require("nodegit");
 var gitHubInfo = require("hosted-git-info");
 
 module.exports = yeoman.generators.Base.extend({
+    constructor: function () {
+        yeoman.generators.Base.apply(this, arguments);
+
+        this.option('repositoryUrl', {
+            desc: 'URL to GitHub repository (determined automatically if omitted).',
+            type: "String",
+            defaults: null
+        });
+    },
+
     prompting: function () {
         var done = this.async();
 
@@ -14,7 +24,8 @@ module.exports = yeoman.generators.Base.extend({
             'Welcome to the ' + chalk.red('webfactory Open Source') + ' project setup!'
         ));
 
-        var prompts = [];
+        var prompts = [
+        ];
         this.prompt(prompts, function (props) {
             this.props = props;
             // To access props later use this.props.someOption;
