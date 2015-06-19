@@ -31,4 +31,8 @@ describe('webfactory-open-source:app', function () {
     it('adds current year to README', function () {
         assert.fileContent('README.md', new RegExp(new Date().getFullYear().toString()));
     });
+
+    it('adds Travis URL to README', function () {
+        assert.fileContent('README.md', /https:\/\/travis-ci.org/);
+    });
 });
