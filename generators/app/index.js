@@ -45,10 +45,10 @@ module.exports = yeoman.generators.Base.extend({
                 .then(function (projectRepository) {
                     return git.Remote.lookup(projectRepository, "origin");
                 })
-                .then(function(remote) {
+                .then(function (remote) {
                     return remote.url();
                 })
-                .then(function(url) {
+                .then(function (url) {
                     return gitHubInfo.fromUrl(url);
                 })
                 .then(function (info) {
@@ -70,7 +70,9 @@ module.exports = yeoman.generators.Base.extend({
                         templateParameters
                     );
                 }.bind(this))
-                .done();
+                .catch(function (error) {
+                    this.log.error('Project setup failed.', error);
+                }.bind(this));
         }
     },
 
