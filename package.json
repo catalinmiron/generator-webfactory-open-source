@@ -1,32 +1,33 @@
 {
-    "name": "generator-webfactory-open-source",
-    "version": "0.0.0",
-    "description": "Yeoman generator",
-    "license": "MIT",
-    "main": "app/index.js",
-    "repository": "webfactory/generator-webfactory-open-source",
-    "author": {
-        "name": "webfactory GmbH",
-        "email": "info@webfactory.de",
-        "url": "https://github.com/webfactory"
-    },
-    "scripts": {
-        "test": "mocha"
-    },
-    "files": [
-        "generators"
-    ],
-    "keywords": [
-        "yeoman-generator"
-    ],
-    "dependencies": {
-        "yeoman-generator": "^0.19.0",
-        "chalk": "^1.0.0",
-        "yosay": "^1.0.2",
-        "nodegit": "^0.4.1",
-        "hosted-git-info": "^2.1.4"
-    },
-    "devDependencies": {
-        "mocha": "*"
-    }
+  "name": "generator-webfactory-open-source",
+  "version": "0.0.0",
+  "description": "Yeoman generator",
+  "license": "MIT",
+  "main": "app/index.js",
+  "repository": "webfactory/generator-webfactory-open-source",
+  "author": {
+    "name": "webfactory GmbH",
+    "email": "info@webfactory.de",
+    "url": "https://github.com/webfactory"
+  },
+  "scripts": {
+    "test": "mocha"
+  },
+  "files": [
+    "generators"
+  ],
+  "keywords": [
+    "yeoman-generator"
+  ],
+  "dependencies": {
+    "chalk": "^1.0.0",
+    "gift": "^0.6.0",
+    "hosted-git-info": "^2.1.4",
+    "nodegit": "^0.4.1",
+    "yeoman-generator": "^0.19.0",
+    "yosay": "^1.0.2"
+  },
+  "devDependencies": {
+    "mocha": "*"
+  }
 }

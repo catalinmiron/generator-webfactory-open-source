@@ -3,8 +3,8 @@
 var yeoman = require('yeoman-generator');
 var chalk = require('chalk');
 var yosay = require('yosay');
-var git = require("nodegit");
-var gitHubInfo = require("hosted-git-info");
+var git = require('gift');
+var gitHubInfo = require('hosted-git-info');
 
 module.exports = yeoman.generators.Base.extend({
     constructor: function () {
@@ -44,13 +44,16 @@ module.exports = yeoman.generators.Base.extend({
             var determineRepositoryUrl = Promise.resolve(this.options.repositoryUrl);
             if (this.options.repositoryUrl === null) {
                 // Repository URL must be determined automatically.
-                determineRepositoryUrl = git.Repository.open(this.destinationPath())
-                    .then(function (projectRepository) {
-                        return git.Remote.lookup(projectRepository, "origin");
-                    })
-                    .then(function (remote) {
-                        return remote.url();
+                var repo = git(this.destinationPath());
+                determineRepositoryUrl = new Promise(function (resolve, reject) {
+                    repo.config(function (error, config) {
+                        if (error) {
+                            reject(error);
+                        } else {
+                            resolve(config.items['remote.origin.url']);
+                        }
                     });
+                });
             }
             determineRepositoryUrl
                 .then(function (url) {
