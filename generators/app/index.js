@@ -5,6 +5,7 @@ var chalk = require('chalk');
 var yosay = require('yosay');
 var git = require('gift');
 var gitHubInfo = require('hosted-git-info');
+var Promise = require('es6-promise').Promise;
 
 module.exports = yeoman.generators.Base.extend({
     constructor: function () {
