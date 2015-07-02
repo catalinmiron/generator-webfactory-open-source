@@ -2,11 +2,15 @@
 
 [![Build Status](https://travis-ci.org/<%= vendor %>/<%= project %>.svg?branch=master)](https://travis-ci.org/<%= vendor %>/<%= project %>)
 
-## Why does this project exist? ##
+## Motivation: Why does this project exist? ##
 
 ## Installation ##
 
+## Concept ##
+
 ## Usage ##
+
+## Known Issues ##
 
 ## Credits, Copyright and License ##
 
