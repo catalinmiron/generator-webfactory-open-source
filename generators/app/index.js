@@ -35,12 +35,6 @@ module.exports = yeoman.generators.Base.extend({
     },
 
     writing: {
-        // ToDo:
-        // - Check Repo Url
-        //   - Generate Travis Image in README
-        // - Check project type (bundle, library, app)
-        //   - add typ to README
-        // - add Travis config
         app: function () {
             var determineRepositoryUrl = Promise.resolve(this.options.repositoryUrl);
             if (this.options.repositoryUrl === null) {
