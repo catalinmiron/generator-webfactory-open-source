@@ -55,4 +55,10 @@ describe('webfactory-open-source:app', function () {
             '.gitignore'
         ]);
     });
+
+    it('adds editor config', function () {
+        assert.file([
+            '.editorconfig'
+        ]);
+    });
 });
