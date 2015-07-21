@@ -64,12 +64,13 @@ module.exports = yeoman.generators.Base.extend({
                 })
                 .then(function (templateParameters) {
                     fs.readdir(this.templatePath(), function (err, files) {
+                        /* @type {Array<String>} files */
                         if (err) {
                             throw err;
                         }
-                        for (var index in files) {
+                        for (var i = 0; i < files.length; i++) {
                             /* @type {String} fileName  */
-                            var fileName = files[index];
+                            var fileName = files[i];
                             if (fileName.indexOf('_') !== 0) {
                                 // Process only templates, which start with "_".
                                 continue;
