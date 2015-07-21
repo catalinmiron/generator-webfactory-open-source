@@ -3,7 +3,6 @@
 var path = require('path');
 var assert = require('yeoman-generator').assert;
 var helpers = require('yeoman-generator').test;
-var os = require('os');
 
 describe('webfactory-open-source:app', function () {
     before(function (done) {
@@ -42,6 +41,12 @@ describe('webfactory-open-source:app', function () {
     it('adds Travis configuration', function () {
         assert.file([
             '.travis.yml'
+        ]);
+    });
+
+    it('adds Composer configuration', function () {
+        assert.file([
+            'composer.json'
         ]);
     });
 });
