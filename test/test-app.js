@@ -49,4 +49,10 @@ describe('webfactory-open-source:app', function () {
             'composer.json'
         ]);
     });
+
+    it('adds .gitignore file', function () {
+        assert.file([
+            '.gitignore'
+        ]);
+    });
 });
