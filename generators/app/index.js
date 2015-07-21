@@ -6,6 +6,7 @@ var yosay = require('yosay');
 var git = require('gift');
 var gitHubInfo = require('hosted-git-info');
 var Promise = require('es6-promise').Promise;
+var fs = require('fs');
 
 module.exports = yeoman.generators.Base.extend({
     constructor: function () {
@@ -62,21 +63,24 @@ module.exports = yeoman.generators.Base.extend({
                     }
                 })
                 .then(function (templateParameters) {
-                    this.fs.copyTpl(
-                        this.templatePath('_LICENSE'),
-                        this.destinationPath('LICENSE'),
-                        templateParameters
-                    );
-                    this.fs.copyTpl(
-                        this.templatePath('_README.md'),
-                        this.destinationPath('README.md'),
-                        templateParameters
-                    );
-                    this.fs.copyTpl(
-                        this.templatePath('_.travis.yml'),
-                        this.destinationPath('.travis.yml'),
-                        templateParameters
-                    );
+                    fs.readdir(this.templatePath(), function (err, files) {
+                        if (err) {
+                            throw err;
+                        }
+                        for (var index in files) {
+                            /* @type {String} fileName  */
+                            var fileName = files[index];
+                            if (fileName.indexOf('_') !== 0) {
+                                // Process only templates, which start with "_".
+                                continue;
+                            }
+                            this.fs.copyTpl(
+                                this.templatePath(fileName),
+                                this.destinationPath(fileName.substr(1)),
+                                templateParameters
+                            );
+                        }
+                    }.bind(this));
                 }.bind(this))
                 .catch(function (error) {
                     this.log.error('Project setup failed.', error);
