@@ -90,6 +90,13 @@ module.exports = yeoman.generators.Base.extend({
     },
 
     install: function () {
-        this.installDependencies();
+        var options = {
+            'npm': fs.existsSync(this.destinationPath('package.json')),
+            'bower': fs.existsSync(this.destinationPath('bower.json'))
+        };
+        if (!options.npm && !options.bower) {
+            return;
+        }
+        this.installDependencies(options);
     }
 });
