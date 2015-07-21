@@ -1,4 +1,8 @@
 # http://editorconfig.org
+#
+# This plugin actives .editorconfig support in PHPStorm:
+#    https://plugins.jetbrains.com/plugin/7294
+# The plugin simplifies the management of different formatting rules per project and file type.
 root = true
 
 [*]
