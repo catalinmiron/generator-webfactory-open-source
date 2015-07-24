@@ -7,6 +7,7 @@
 
 - Activate builds in [Travis CI](https://travis-ci.org/)
 - Activate repository at [Coveralls](https://coveralls.io)
+- Create a [Zap](https://zapier.com/) that converts GitHub issues to Fogbug cases
 - Configure HipChat webhook (post repository updates to "Github" room)
 - Activate job in Jenkins CI
 
