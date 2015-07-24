@@ -60,8 +60,10 @@ module.exports = yeoman.generators.Base.extend({
                         'vendor': info.user,
                         'project': info.project,
                         'year': new Date().getFullYear(),
-                        'toDashed': function (str) {
-                            return str.replace(/([a-z])([A-Z])/g, '$1-$2').toLowerCase();
+                        'helpers': {
+                            'toDashed': function (str) {
+                                return str.replace(/([a-z])([A-Z])/g, '$1-$2').toLowerCase();
+                            }
                         }
                     }
                 })
