@@ -45,10 +45,16 @@ describe('open source generator', function () {
             ]);
         });
 
-        it('adds Composer configuration', function () {
-            assert.file([
-                'composer.json'
-            ]);
+        describe('provides Composer configuration and', function () {
+            it('creates composer.json', function () {
+                assert.file([
+                    'composer.json'
+                ]);
+            });
+
+            it('derives package name from vendor and project', function () {
+                assert.fileContent('composer.json', '"webfactory/generator-webfactory-open-source"');
+            });
         });
 
         it('adds .gitignore file', function () {
@@ -74,12 +80,14 @@ describe('open source generator', function () {
                 .on('end', done);
         });
 
-        it('adds dashed vendor name in composer.json', function () {
+        describe('provides Composer configuration and', function () {
+            it('adds dashed vendor name in composer.json', function () {
+                assert.fileContent('composer.json', 'web-factory');
+            });
 
-        });
-
-        it('adds dashed repository name in composer.json', function () {
-
+            it('adds dashed repository name in composer.json', function () {
+                assert.fileContent('composer.json', 'generator-webfactory-open-source');
+            });
         });
     });
 });
