@@ -10,7 +10,7 @@ It is mainly useful for webfactory GmbH as for instance the company name is hard
 ### Install Yeoman and generator ###
 
 Follow the following steps to install Yeoman and the webfactory Open Source generator.
-This has to done only *once*.
+This has to be done only *once*.
 
     sudo npm install -g yo
     cd ~/Projekte
