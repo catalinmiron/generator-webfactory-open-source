@@ -1,5 +1,5 @@
 {
-    "name": "<%= vendor %>/<%= project %>",
+    "name": "<%= toDashed(vendor) %>/<%= toDashed(project) %>",
     "description": "",
     "minimum-stability": "stable",
     "license": "MIT",

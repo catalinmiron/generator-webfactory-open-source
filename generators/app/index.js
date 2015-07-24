@@ -59,7 +59,10 @@ module.exports = yeoman.generators.Base.extend({
                     return {
                         'vendor': info.user,
                         'project': info.project,
-                        'year': new Date().getFullYear()
+                        'year': new Date().getFullYear(),
+                        'toDashed': function (str) {
+                            return str.replace(/([a-z])([A-Z])/g, '$1-$2').toLowerCase();
+                        }
                     }
                 })
                 .then(function (templateParameters) {
