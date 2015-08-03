@@ -12,6 +12,9 @@ describe('open source generator', function () {
                     skipInstall: true,
                     repositoryUrl: "git@github.com:webfactory/generator-webfactory-open-source.git"
                 })
+                .withPrompts({
+                    projectType: 'library'
+                })
                 .on('end', done);
         });
 
