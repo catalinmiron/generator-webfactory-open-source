@@ -68,6 +68,12 @@ describe('open source generator', function () {
                 '.editorconfig'
             ]);
         });
+
+        it('adds PHPUnit config', function () {
+            assert.file([
+                'phpunit.xml.dist'
+            ]);
+        });
     });
 
     describe('called with camel cased repository name', function () {
