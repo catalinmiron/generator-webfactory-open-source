@@ -27,6 +27,25 @@ module.exports = yeoman.generators.Base.extend({
         ));
 
         var prompts = [
+            {
+                type: 'list',
+                name: 'projectType',
+                message: 'Which type of project would you like to create?',
+                choices: [
+                    {
+                        name: 'PHP Library',
+                        value: 'library'
+                    },
+                    {
+                        name: 'Symfony 2 Bundle',
+                        value: 'bundle'
+                    },
+                    {
+                        name: 'Symfony 2 Application',
+                        value: 'application'
+                    }
+                ]
+            }
         ];
         this.prompt(prompts, function (props) {
             this.props = props;
