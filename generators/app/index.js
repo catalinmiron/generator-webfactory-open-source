@@ -8,6 +8,11 @@ var gitHubInfo = require('hosted-git-info');
 var Promise = require('es6-promise').Promise;
 var fs = require('fs');
 
+/**
+ * Generator that initializes an open source project.
+ *
+ * @see http://yeoman.io/authoring/running-context.html
+ */
 module.exports = yeoman.generators.Base.extend({
     constructor: function () {
         yeoman.generators.Base.apply(this, arguments);
