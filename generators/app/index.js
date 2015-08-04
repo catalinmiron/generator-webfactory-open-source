@@ -56,6 +56,8 @@ module.exports = yeoman.generators.Base.extend({
 
     writing: {
         app: function () {
+            var done = this.async();
+
             var determineRepositoryUrl = Promise.resolve(this.options.repositoryUrl);
             if (this.options.repositoryUrl === null) {
                 // Repository URL must be determined automatically.
@@ -107,8 +109,12 @@ module.exports = yeoman.generators.Base.extend({
                         }
                     }.bind(this));
                 }.bind(this))
+                .then(function () {
+                    done();
+                })
                 .catch(function (error) {
                     this.log.error('Project setup failed.', error);
+                    done();
                 }.bind(this));
         }
     },
