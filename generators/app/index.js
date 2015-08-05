@@ -100,9 +100,7 @@ module.exports = yeoman.generators.Base.extend({
                         }
                     }.bind(this));
                 }.bind(this))
-                .then(function () {
-                    done();
-                })
+                .then(done)
                 .catch(function (error) {
                     this.log.error('Project setup failed.', error);
                     done();
