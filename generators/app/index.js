@@ -53,8 +53,8 @@ module.exports = yeoman.generators.Base.extend({
             }
         ];
         this.prompt(prompts, function (props) {
-            this.props = props;
             // To access props later use this.props.someOption;
+            this.props = props;
             done();
         }.bind(this));
     },
@@ -63,21 +63,7 @@ module.exports = yeoman.generators.Base.extend({
         app: function () {
             var done = this.async();
 
-            var determineRepositoryUrl = Promise.resolve(this.options.repositoryUrl);
-            if (this.options.repositoryUrl === null) {
-                // Repository URL must be determined automatically.
-                var repo = git(this.destinationPath());
-                determineRepositoryUrl = new Promise(function (resolve, reject) {
-                    repo.config(function (error, config) {
-                        if (error) {
-                            reject(error);
-                        } else {
-                            resolve(config.items['remote.origin.url']);
-                        }
-                    });
-                });
-            }
-            determineRepositoryUrl
+            this._determineRepositoryUrl()
                 .then(function (url) {
                     return gitHubInfo.fromUrl(url);
                 })
@@ -133,5 +119,29 @@ module.exports = yeoman.generators.Base.extend({
             return;
         }
         this.installDependencies(options);
+    },
+
+    /**
+     * Returns a promise that determines the repository URL of the project that is initialized.
+     *
+     * @returns {ES6Promise}
+     * @private
+     */
+    _determineRepositoryUrl: function () {
+        var determineRepositoryUrl = Promise.resolve(this.options.repositoryUrl);
+        if (this.options.repositoryUrl === null) {
+            // Repository URL must be determined automatically.
+            var repo = git(this.destinationPath());
+            determineRepositoryUrl = new Promise(function (resolve, reject) {
+                repo.config(function (error, config) {
+                    if (error) {
+                        reject(error);
+                    } else {
+                        resolve(config.items['remote.origin.url']);
+                    }
+                });
+            });
+        }
+        return determineRepositoryUrl;
     }
 });
