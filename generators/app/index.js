@@ -80,24 +80,27 @@ module.exports = yeoman.generators.Base.extend({
                     }
                 })
                 .then(function (templateParameters) {
-                    fs.readdir(this.templatePath(), function (err, files) {
-                        /* @type {Array<String>} files */
-                        if (err) {
-                            throw err;
-                        }
-                        for (var i = 0; i < files.length; i++) {
-                            /* @type {String} fileName  */
-                            var fileName = files[i];
-                            if (fileName.indexOf('_') !== 0) {
-                                // Process only templates, which start with "_".
-                                continue;
+                    return new Promise(function (resolve, reject) {
+                        fs.readdir(this.templatePath(), function (err, files) {
+                            /* @type {Array<String>} files */
+                            if (err) {
+                                reject(err);
                             }
-                            this.fs.copyTpl(
-                                this.templatePath(fileName),
-                                this.destinationPath(fileName.substr(1)),
-                                templateParameters
-                            );
-                        }
+                            for (var i = 0; i < files.length; i++) {
+                                /* @type {String} fileName  */
+                                var fileName = files[i];
+                                if (fileName.indexOf('_') !== 0) {
+                                    // Process only templates, which start with "_".
+                                    continue;
+                                }
+                                this.fs.copyTpl(
+                                    this.templatePath(fileName),
+                                    this.destinationPath(fileName.substr(1)),
+                                    templateParameters
+                                );
+                            }
+                            resolve();
+                        }.bind(this));
                     }.bind(this));
                 }.bind(this))
                 .then(done)
