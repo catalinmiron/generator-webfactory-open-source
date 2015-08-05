@@ -128,20 +128,19 @@ module.exports = yeoman.generators.Base.extend({
      * @private
      */
     _determineRepositoryUrl: function () {
-        var determineRepositoryUrl = Promise.resolve(this.options.repositoryUrl);
-        if (this.options.repositoryUrl === null) {
-            // Repository URL must be determined automatically.
-            var repo = git(this.destinationPath());
-            determineRepositoryUrl = new Promise(function (resolve, reject) {
-                repo.config(function (error, config) {
-                    if (error) {
-                        reject(error);
-                    } else {
-                        resolve(config.items['remote.origin.url']);
-                    }
-                });
-            });
+        if (this.options.repositoryUrl !== null) {
+            return Promise.resolve(this.options.repositoryUrl);
         }
-        return determineRepositoryUrl;
+        // Repository URL must be determined automatically.
+        var repo = git(this.destinationPath());
+        return new Promise(function (resolve, reject) {
+            repo.config(function (error, config) {
+                if (error) {
+                    reject(error);
+                } else {
+                    resolve(config.items['remote.origin.url']);
+                }
+            });
+        });
     }
 });
