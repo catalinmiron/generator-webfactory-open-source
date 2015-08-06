@@ -7,6 +7,7 @@ var git = require('gift');
 var gitHubInfo = require('hosted-git-info');
 var Promise = require('es6-promise').Promise;
 var fs = require('fs');
+var path = require('path');
 
 /**
  * Generator that initializes an open source project.
@@ -80,8 +81,13 @@ module.exports = yeoman.generators.Base.extend({
                     }
                 })
                 .then(function (templateParameters) {
+                    // todo: stack template paths
+                    // create Promise via Promise.all to copy templates in order
+
                     return new Promise(function (resolve, reject) {
-                        fs.readdir(this.templatePath(), function (err, files) {
+                        var templateDirectory = this._getTemplatePaths()[0];
+                        var subDirectory = path.relative(this.templatePath(), templateDirectory);
+                        fs.readdir(templateDirectory, function (err, files) {
                             /* @type {Array<String>} files */
                             if (err) {
                                 reject(err);
@@ -94,7 +100,7 @@ module.exports = yeoman.generators.Base.extend({
                                     continue;
                                 }
                                 this.fs.copyTpl(
-                                    this.templatePath(fileName),
+                                    this.templatePath(path.join(subDirectory, fileName)),
                                     this.destinationPath(fileName.substr(1)),
                                     templateParameters
                                 );
@@ -143,5 +149,22 @@ module.exports = yeoman.generators.Base.extend({
                 }
             });
         });
+    },
+
+    /**
+     * Returns paths to the template directories that are relevant
+     * for the initialized project.
+     *
+     * The paths are ordered by priority: The most specific ones are
+     * at the end of the array.
+     *
+     * @returns {Array<String>} Paths to the template directories.
+     * @private
+     */
+    _getTemplatePaths: function () {
+        return [
+            this.templatePath('common'),
+            this.templatePath(this.props.projectType)
+        ].filter(fs.existsSync);
     }
 });
