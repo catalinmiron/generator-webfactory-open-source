@@ -86,7 +86,7 @@ module.exports = yeoman.generators.Base.extend({
 
                     return new Promise(function (resolve, reject) {
                         var templateDirectory = this._getTemplatePaths()[0];
-                        var subDirectory = path.relative(this.templatePath(), templateDirectory);
+                        var subDirectory = this._getTemplateSubDirectory(templateDirectory);
                         fs.readdir(templateDirectory, function (err, files) {
                             /* @type {Array<String>} files */
                             if (err) {
@@ -166,5 +166,21 @@ module.exports = yeoman.generators.Base.extend({
             this.templatePath('common'),
             this.templatePath(this.props.projectType)
         ].filter(fs.existsSync);
+    },
+
+    /**
+     * Returns the path of the given directory relative to the template directory.
+     *
+     * Example:
+     *
+     *     var subDirectory = this.templatePath('common');
+     *     var directory = _getTemplateSubDirectory(subDirectory); // directory == 'common'
+     *
+     * @param {String} templateSubDirectory
+     * @returns {String}
+     * @private
+     */
+    _getTemplateSubDirectory: function (templateSubDirectory) {
+        return path.relative(this.templatePath(), templateSubDirectory);
     }
 });
