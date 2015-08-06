@@ -187,8 +187,9 @@ module.exports = yeoman.generators.Base.extend({
                 /* @type {Array<String>} files */
                 if (err) {
                     reject(err);
+                } else {
+                    resolve(files);
                 }
-                resolve(files);
             });
         });
         return findFiles
