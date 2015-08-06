@@ -85,31 +85,7 @@ module.exports = yeoman.generators.Base.extend({
                     // create Promise via Promise.all to copy templates in order
 
                     var templateDirectory = this._getTemplatePaths()[0];
-                    var findFiles = new Promise(function (resolve, reject) {
-                        fs.readdir(templateDirectory, function (err, files) {
-                            /* @type {Array<String>} files */
-                            if (err) {
-                                reject(err);
-                            }
-                            resolve(files);
-                        });
-                    });
-                    return findFiles
-                        .then(function (files) {
-                            return files.filter(this._isTemplateFile);
-                        }.bind(this))
-                        .then(function (templates) {
-                            var subDirectory = this._getTemplateSubDirectory(templateDirectory);
-                            for (var i = 0; i < templates.length; i++) {
-                                /* @type {String} fileName  */
-                                var template = templates[i];
-                                this.fs.copyTpl(
-                                    this.templatePath(path.join(subDirectory, template)),
-                                    this.destinationPath(template.substr(1)),
-                                    templateParameters
-                                );
-                            }
-                        }.bind(this));
+                    return this._copyTemplatesFrom(templateDirectory, templateParameters);
                 }.bind(this))
                 .then(done)
                 .catch(function (error) {
@@ -197,5 +173,41 @@ module.exports = yeoman.generators.Base.extend({
      */
     _isTemplateFile: function (fileName) {
         return fileName.indexOf('_') === 0;
+    },
+
+    /**
+     * Copies the templates in the given directory to project directory.
+     *
+     * @param {String} templateDirectory
+     * @param {Object} templateParameters
+     * @returns {ES6Promise}
+     * @private
+     */
+    _copyTemplatesFrom: function (templateDirectory, templateParameters) {
+        var findFiles = new Promise(function (resolve, reject) {
+            fs.readdir(templateDirectory, function (err, files) {
+                /* @type {Array<String>} files */
+                if (err) {
+                    reject(err);
+                }
+                resolve(files);
+            });
+        });
+        return findFiles
+            .then(function (files) {
+                return files.filter(this._isTemplateFile);
+            }.bind(this))
+            .then(function (templates) {
+                var subDirectory = this._getTemplateSubDirectory(templateDirectory);
+                for (var i = 0; i < templates.length; i++) {
+                    /* @type {String} fileName  */
+                    var template = templates[i];
+                    this.fs.copyTpl(
+                        this.templatePath(path.join(subDirectory, template)),
+                        this.destinationPath(template.substr(1)),
+                        templateParameters
+                    );
+                }
+            }.bind(this));
     }
 });
