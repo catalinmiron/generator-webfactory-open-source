@@ -92,8 +92,8 @@ module.exports = yeoman.generators.Base.extend({
                                 reject(err);
                             }
                             resolve(files);
-                        }.bind(this));
-                    }.bind(this));
+                        });
+                    });
                     return findFiles
                         .then(function (files) {
                             return files.filter(this._isTemplateFile);
