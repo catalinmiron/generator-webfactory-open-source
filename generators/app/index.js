@@ -81,11 +81,9 @@ module.exports = yeoman.generators.Base.extend({
                     }
                 })
                 .then(function (templateParameters) {
-                    // todo: stack template paths
-                    // create Promise via Promise.all to copy templates in order
-
-                    var templateDirectory = this._getTemplatePaths()[0];
-                    return this._copyTemplatesFrom(templateDirectory, templateParameters);
+                    return Promise.all(this._getTemplatePaths().map(function (templateDirectory) {
+                        return this._copyTemplatesFrom(templateDirectory, templateParameters);
+                    }.bind(this)));
                 }.bind(this))
                 .then(done)
                 .catch(function (error) {
