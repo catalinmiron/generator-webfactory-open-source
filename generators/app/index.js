@@ -84,27 +84,32 @@ module.exports = yeoman.generators.Base.extend({
                     // todo: stack template paths
                     // create Promise via Promise.all to copy templates in order
 
-                    return new Promise(function (resolve, reject) {
-                        var templateDirectory = this._getTemplatePaths()[0];
-                        var subDirectory = this._getTemplateSubDirectory(templateDirectory);
+                    var templateDirectory = this._getTemplatePaths()[0];
+                    var findFiles = new Promise(function (resolve, reject) {
                         fs.readdir(templateDirectory, function (err, files) {
                             /* @type {Array<String>} files */
                             if (err) {
                                 reject(err);
                             }
-                            var templates = files.filter(this._isTemplateFile);
+                            resolve(files);
+                        }.bind(this));
+                    }.bind(this));
+                    return findFiles
+                        .then(function (files) {
+                            return files.filter(this._isTemplateFile);
+                        }.bind(this))
+                        .then(function (templates) {
+                            var subDirectory = this._getTemplateSubDirectory(templateDirectory);
                             for (var i = 0; i < templates.length; i++) {
                                 /* @type {String} fileName  */
-                                var fileName = templates[i];
+                                var template = templates[i];
                                 this.fs.copyTpl(
-                                    this.templatePath(path.join(subDirectory, fileName)),
-                                    this.destinationPath(fileName.substr(1)),
+                                    this.templatePath(path.join(subDirectory, template)),
+                                    this.destinationPath(template.substr(1)),
                                     templateParameters
                                 );
                             }
-                            resolve();
                         }.bind(this));
-                    }.bind(this));
                 }.bind(this))
                 .then(done)
                 .catch(function (error) {
