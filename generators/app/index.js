@@ -87,7 +87,8 @@ module.exports = yeoman.generators.Base.extend({
                 }.bind(this))
                 .then(done)
                 .catch(function (error) {
-                    this.log.error('Project setup failed.', error);
+                    /** @type {Error} error */
+                    this.log.error('Project setup failed.', error, error.stack);
                     done();
                 }.bind(this));
         }
