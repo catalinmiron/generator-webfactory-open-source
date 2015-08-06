@@ -92,13 +92,10 @@ module.exports = yeoman.generators.Base.extend({
                             if (err) {
                                 reject(err);
                             }
-                            for (var i = 0; i < files.length; i++) {
+                            var templates = files.filter(this._isTemplateFile);
+                            for (var i = 0; i < templates.length; i++) {
                                 /* @type {String} fileName  */
-                                var fileName = files[i];
-                                if (fileName.indexOf('_') !== 0) {
-                                    // Process only templates, which start with "_".
-                                    continue;
-                                }
+                                var fileName = templates[i];
                                 this.fs.copyTpl(
                                     this.templatePath(path.join(subDirectory, fileName)),
                                     this.destinationPath(fileName.substr(1)),
@@ -182,5 +179,18 @@ module.exports = yeoman.generators.Base.extend({
      */
     _getTemplateSubDirectory: function (templateSubDirectory) {
         return path.relative(this.templatePath(), templateSubDirectory);
+    },
+
+    /**
+     * Checks if the given file is a template.
+     *
+     * Templates start with an underscore.
+     *
+     * @param {String} fileName
+     * @returns {boolean}
+     * @private
+     */
+    _isTemplateFile: function (fileName) {
+        return fileName.indexOf('_') === 0;
     }
 });
