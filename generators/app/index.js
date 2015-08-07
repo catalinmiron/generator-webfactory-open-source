@@ -102,17 +102,6 @@ module.exports = yeoman.generators.Base.extend({
         }
     },
 
-    install: function () {
-        var options = {
-            'npm': fs.existsSync(this.destinationPath('package.json')),
-            'bower': fs.existsSync(this.destinationPath('bower.json'))
-        };
-        if (!options.npm && !options.bower) {
-            return;
-        }
-        this.installDependencies(options);
-    },
-
     /**
      * Returns a promise that determines the repository URL of the project that is initialized.
      *
