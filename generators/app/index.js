@@ -8,6 +8,7 @@ var gitHubInfo = require('hosted-git-info');
 var Promise = require('es6-promise').Promise;
 var fs = require('fs');
 var path = require('path');
+var objectMerge = require('object-merge');
 
 /**
  * Generator that initializes an open source project.
@@ -81,9 +82,14 @@ module.exports = yeoman.generators.Base.extend({
                     }
                 })
                 .then(function (templateParameters) {
-                    return Promise.all(this._getTemplatePaths().map(function (templateDirectory) {
-                        return this._copyTemplatesFrom(templateDirectory, templateParameters);
+                    var findTemplates = Promise.all(this._getTemplatePaths().map(function (templateDirectory) {
+                        return this._findTemplates(templateDirectory);
                     }.bind(this)));
+                    return findTemplates
+                        .then(this._combineTemplateDestinations.bind(this))
+                        .then(function (sourceToDestination) {
+                            this._copyTemplates(sourceToDestination, templateParameters);
+                        }.bind(this));
                 }.bind(this))
                 .then(function () {
                     done();
@@ -180,11 +186,11 @@ module.exports = yeoman.generators.Base.extend({
      * Copies the templates in the given directory to project directory.
      *
      * @param {String} templateDirectory
-     * @param {Object} templateParameters
+     *
      * @returns {ES6Promise}
      * @private
      */
-    _copyTemplatesFrom: function (templateDirectory, templateParameters) {
+    _findTemplates: function (templateDirectory) {
         var findFiles = new Promise(function (resolve, reject) {
             fs.readdir(templateDirectory, function (err, files) {
                 /* @type {Array<String>} files */
@@ -200,16 +206,70 @@ module.exports = yeoman.generators.Base.extend({
                 return files.filter(this._isTemplateFile);
             }.bind(this))
             .then(function (templates) {
+                var sourceToDestination = {};
                 var subDirectory = this._getTemplateSubDirectory(templateDirectory);
                 for (var i = 0; i < templates.length; i++) {
                     /* @type {String} fileName  */
                     var template = templates[i];
-                    this.fs.copyTpl(
-                        this.templatePath(path.join(subDirectory, template)),
-                        this.destinationPath(template.substr(1)),
-                        templateParameters
-                    );
+                    var source = this.templatePath(path.join(subDirectory, template));
+                    sourceToDestination[source] = this.destinationPath(template.substr(1));
                 }
+                return sourceToDestination;
             }.bind(this));
+    },
+
+    /**
+     * Accepts a list of template sources and destinations and combines them.
+     *
+     * In case of conflict, the latter source wins.
+     *
+     * @param {Array<Object<string, string>>} sourcesAndDestinations
+     * @return {Object<string, string>} Sources and their corresponding destinations.
+     * @private
+     */
+    _combineTemplateDestinations: function (sourcesAndDestinations) {
+        var destinationToSource = {};
+        for (var i = 0; i < sourcesAndDestinations.length; i++) {
+            var sourceToDestination = sourcesAndDestinations[i];
+            destinationToSource = objectMerge(destinationToSource, this._invert(sourceToDestination));
+        }
+        return this._invert(destinationToSource);
+    },
+
+    /**
+     * Accepts an object with source and destination template paths and copies them.
+     *
+     * @param {Object<string, string>} sourceToDestination
+     * @param {Object} templateParameters
+     * @private
+     */
+    _copyTemplates: function (sourceToDestination, templateParameters) {
+        for (var source in sourceToDestination) {
+            if(sourceToDestination.hasOwnProperty(source)) {
+                this.fs.copyTpl(
+                    source,
+                    sourceToDestination[source],
+                    templateParameters
+                );
+            }
+        }
+    },
+
+    /**
+     * Flips keys and values in an object.
+     *
+     * @param {Object<string, string>} obj
+     * @returns {Object<string, string>}
+     * @private
+     * @see http://nelsonwells.net/2011/10/swap-object-key-and-values-in-javascript/
+     */
+    _invert: function (obj) {
+        var newObj = {};
+        for (var prop in obj) {
+            if(obj.hasOwnProperty(prop)) {
+                newObj[obj[prop]] = prop;
+            }
+        }
+        return newObj;
     }
 });
