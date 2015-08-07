@@ -61,45 +61,43 @@ module.exports = yeoman.generators.Base.extend({
         }.bind(this));
     },
 
-    writing: {
-        app: function () {
-            var done = this.async();
+    writing: function () {
+        var done = this.async();
 
-            this._determineRepositoryUrl()
-                .then(function (url) {
-                    return gitHubInfo.fromUrl(url);
-                })
-                .then(function (info) {
-                    return {
-                        'vendor': info.user,
-                        'project': info.project,
-                        'year': new Date().getFullYear(),
-                        'helpers': {
-                            'toDashed': function (str) {
-                                return str.replace(/([a-z])([A-Z])/g, '$1-$2').toLowerCase();
-                            }
+        this._determineRepositoryUrl()
+            .then(function (url) {
+                return gitHubInfo.fromUrl(url);
+            })
+            .then(function (info) {
+                return {
+                    'vendor': info.user,
+                    'project': info.project,
+                    'year': new Date().getFullYear(),
+                    'helpers': {
+                        'toDashed': function (str) {
+                            return str.replace(/([a-z])([A-Z])/g, '$1-$2').toLowerCase();
                         }
                     }
-                })
-                .then(function (templateParameters) {
-                    var findTemplates = Promise.all(this._getTemplatePaths().map(function (templateDirectory) {
-                        return this._findTemplates(templateDirectory);
-                    }.bind(this)));
-                    return findTemplates
-                        .then(this._combineTemplateDestinations.bind(this))
-                        .then(function (sourceToDestination) {
-                            this._copyTemplates(sourceToDestination, templateParameters);
-                        }.bind(this));
-                }.bind(this))
-                .then(function () {
-                    done();
-                })
-                .catch(function (error) {
-                    /** @type {Error} error */
-                    this.log.error('Project setup failed.');
-                    this.env.error(error);
-                }.bind(this));
-        }
+                }
+            })
+            .then(function (templateParameters) {
+                var findTemplates = Promise.all(this._getTemplatePaths().map(function (templateDirectory) {
+                    return this._findTemplates(templateDirectory);
+                }.bind(this)));
+                return findTemplates
+                    .then(this._combineTemplateDestinations.bind(this))
+                    .then(function (sourceToDestination) {
+                        this._copyTemplates(sourceToDestination, templateParameters);
+                    }.bind(this));
+            }.bind(this))
+            .then(function () {
+                done();
+            })
+            .catch(function (error) {
+                /** @type {Error} error */
+                this.log.error('Project setup failed.');
+                this.env.error(error);
+            }.bind(this));
     },
 
     /**
