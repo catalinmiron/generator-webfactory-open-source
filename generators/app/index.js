@@ -85,7 +85,9 @@ module.exports = yeoman.generators.Base.extend({
                         return this._copyTemplatesFrom(templateDirectory, templateParameters);
                     }.bind(this)));
                 }.bind(this))
-                .then(done)
+                .then(function () {
+                    done();
+                })
                 .catch(function (error) {
                     /** @type {Error} error */
                     this.log.error('Project setup failed.');
